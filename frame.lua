@@ -52,7 +52,7 @@ PWBM.frame:SetScript('OnUpdate', function ()
   local playerList = ''
   for player, details in pairs(PWBM_seen) do
     local lastSeenAgo = math.floor(GetTime() - details.lastSeen)
-    playerList = playerList .. '\n' .. player .. '|cff777777  ' .. toTimeString(toTime(lastSeenAgo)) .. '|r'
+    playerList = playerList .. '\n' .. '|cff999999  ' .. toTimeString(toTime(lastSeenAgo)) .. '|r ' .. player ..  ' |cff999999 v' .. details.version .. '|r'
     playerCount = playerCount + 1
   end
 
