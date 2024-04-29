@@ -1,0 +1,9 @@
+## Interface: 11200
+## Title: |cffa050ffPizza|cffffffffWorldBuffs |cff777777Monitor
+## Author: Pizzahawaii
+## Notes: Monitoring/debugging addon for PizzaWorldBuffs
+## Version: 0.0.1
+## SavedVariablesPerCharacter: PWBM_seen
+
+main.lua
+frame.lua
