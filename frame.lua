@@ -21,7 +21,7 @@ end)
 
 -- Text
 PWBM.frame.text = PWBM.frame:CreateFontString('PizzaWorldBuffs_Monitor_Text', 'DIALOG', 'GameFontWhite')
-PWBM.frame.text:SetJustifyH('CENTER')
+PWBM.frame.text:SetJustifyH('LEFT')
 PWBM.frame.text:SetPoint('CENTER', 0, 0)
 
 local function toTime(seconds)
@@ -44,15 +44,15 @@ end
 
 PWBM.frame:SetScript('OnUpdate', function ()
   -- Throttle this function so it doesn't run on every frame render
-  if (this.tick or 1) > GetTime() then return else this.tick = GetTime() + .1 end
+  if (this.tick or 1) > GetTime() then return else this.tick = GetTime() + 1 end
 
-  PWBM.frame.content = 'PizzaWorldBuffs_Monitor\n'
-  
+  PWBM.frame.content = '|cffa050ffPizza|rWorldBuffs |cff777777Monitor|r\n'
+
   local playerCount = 0
   local playerList = ''
   for player, details in pairs(PWBM_seen) do
     local lastSeenAgo = math.floor(GetTime() - details.lastSeen)
-    playerList = playerList .. '\n' .. '|cff999999  ' .. toTimeString(toTime(lastSeenAgo)) .. '|r ' .. player ..  ' |cff999999 v' .. details.version .. '|r'
+    playerList = playerList .. '\n' .. player ..  '|cff777777   v' .. details.version .. '|cffcccccc   ' .. toTimeString(toTime(lastSeenAgo)) .. '|r '
     playerCount = playerCount + 1
   end
 
@@ -60,4 +60,5 @@ PWBM.frame:SetScript('OnUpdate', function ()
 
   PWBM.frame.text:SetText(PWBM.frame.content)
   PWBM.frame:SetHeight(PWBM.frame.text:GetHeight() + 10)
+  PWBM.frame:SetWidth(PWBM.frame.text:GetWidth() + 10)
 end)
