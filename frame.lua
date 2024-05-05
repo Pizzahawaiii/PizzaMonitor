@@ -39,24 +39,37 @@ local function toTimeString(h, m, s)
   else
     return string.format('%d:%.2d', m, s)
   end
-  -- return (h > 0 and h .. 'h ' or '') .. (m > 0 and m .. 'm ' or '') .. s .. 's'
+end
+
+local function toVersionStr(v)
+  local major = math.floor(v / 10000)
+  local minor = math.floor((v - major * 10000) / 100)
+  local patch = v - major * 10000 - minor * 100
+  return major .. '.' .. minor .. '.' .. patch
 end
 
 PWBM.frame:SetScript('OnUpdate', function ()
   -- Throttle this function so it doesn't run on every frame render
   if (this.tick or 1) > GetTime() then return else this.tick = GetTime() + 1 end
 
-  PWBM.frame.content = '|cffa050ffPizza|rWorldBuffs |cff777777Monitor|r\n'
+  PWBM.frame.content = '|cffa050ffPizza|rWorldBuffs |cff777777Monitor|r'
 
+  local versionCounts = {}
   local playerCount = 0
   local playerList = ''
   for player, details in pairs(PWBM_seen) do
+    versionCounts[details.version] = versionCounts[details.version] and versionCounts[details.version] + 1 or 1
     local lastSeenAgo = math.floor(GetTime() - details.lastSeen)
-    playerList = playerList .. '\n' .. player ..  '|cff777777   v' .. details.version .. '|cffcccccc   ' .. toTimeString(toTime(lastSeenAgo)) .. '|r '
+    playerList = playerList .. '\n' .. player ..  '|cff777777   v' .. toVersionStr(details.version) .. '|cffcccccc   ' .. toTimeString(toTime(lastSeenAgo)) .. '|r '
     playerCount = playerCount + 1
   end
 
-  PWBM.frame.content = PWBM.frame.content .. '\nUsers: ' .. playerCount .. '\n' .. playerList
+  local versionList = ''
+  for version, count in pairs(versionCounts) do
+    versionList = versionList .. '\n|cff777777v' .. toVersionStr(version) .. ':|r ' .. count
+  end
+
+  PWBM.frame.content = PWBM.frame.content .. '\n\nUsers: ' .. playerCount .. '\n' .. versionList .. '\n' .. playerList
 
   PWBM.frame.text:SetText(PWBM.frame.content)
   PWBM.frame:SetHeight(PWBM.frame.text:GetHeight() + 10)
