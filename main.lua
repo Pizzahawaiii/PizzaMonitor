@@ -2,12 +2,15 @@ PizzaWorldBuffs_Monitor = CreateFrame('Frame', 'PizzaWorldBuffs_Monitor', UIPare
 local PWBM = PizzaWorldBuffs_Monitor
 local PWB = PizzaWorldBuffs
 
-PWBM_seen = {}
-
 local timerStrs = {}
 
 PWBM:RegisterEvent('CHAT_MSG_CHANNEL')
+PWBM:RegisterEvent('PLAYER_ENTERING_WORLD')
 PWBM:SetScript('OnEvent', function ()
+  if event == 'PLAYER_ENTERING_WORLD' then
+    PWBM_seen = {}
+  end
+
   if event == 'CHAT_MSG_CHANNEL' then
     local _, _, source = string.find(arg4, '(%d+)%.')
     local channelName
