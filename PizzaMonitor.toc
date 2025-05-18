@@ -1,0 +1,12 @@
+## Interface: 11200
+## Title: |cffa050ffPizza|cffffffffMonitor
+## Author: Pizzahawaii
+## Notes: Various monitoring/debugging funcionalities
+## Version: 0.0.1
+## SavedVariablesPerCharacter: PizzaMonitor_data
+
+src\main.lua
+src\utils.lua
+src\pwb.lua
+src\ps.lua
+src\lft.lua
