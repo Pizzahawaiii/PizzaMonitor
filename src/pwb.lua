@@ -70,9 +70,10 @@ PizzaMonitor:RegisterModule('pwb', function ()
     -- Throttle this function so it doesn't run on every frame render
     if (this.tick or 1) > GetTime() then return else this.tick = GetTime() + 1 end
 
-    -- Remove players not seen for 5 minutes
+    -- Remove players not seen for 60 minutes
+    local thresholdMin = 60
     for player, details in pairs(data.pwb.seen) do
-      if time() > details.lastSeen + 300 then
+      if time() > details.lastSeen + (thresholdMin * 60) then
         _G.PizzaMonitor_data.pwb.seen[player] = nil
       end
     end
@@ -85,7 +86,7 @@ PizzaMonitor:RegisterModule('pwb', function ()
       zoneTentCounts[v] = nil
     end
 
-    PM.pwb.content = '|cffa050ffPizza|rMonitor |cff777777PizzaWorldBuffs|r'
+    PM.pwb.content = '|cffa050ffPizza|rMonitor |cff777777PizzaWorldBuffs|r\n\n(Last ' .. thresholdMin .. ' minutes)'
 
     local playerCount = 0
     local playerList = ''
@@ -93,7 +94,7 @@ PizzaMonitor:RegisterModule('pwb', function ()
       versionCounts[details.version] = versionCounts[details.version] and versionCounts[details.version] + 1 or 1
       local lastSeenAgo = math.floor(GetTime() - details.lastSeen)
       local lastSeenAgoStr = PM.utils.toTimeString(PM.utils.toTime(lastSeenAgo))
-      playerList = playerList .. '\n' .. player ..  '|cff777777   v' .. PM.utils.toVersionStr(details.version) .. '|cffcccccc   ' .. lastSeenAgoStr .. '|r '
+      playerList = playerList .. '\n' .. player ..  '|cff777777   v' .. PM.utils.toVersionStr(tonumber(details.version)) .. '|cffcccccc   ' .. lastSeenAgoStr .. '|r '
       playerCount = playerCount + 1
     end
 
@@ -108,7 +109,7 @@ PizzaMonitor:RegisterModule('pwb', function ()
     for _, version in pairs(versions) do
       local count = versionCounts[version]
       local percentage = math.floor(count * 100 / playerCount + 0.5)
-      versionList = versionList .. '\n|cff777777v' .. PM.utils.toVersionStr(version) .. ':|r ' .. count .. '|cffcccccc (' .. percentage .. '%)|r'
+      versionList = versionList .. '\n|cff777777v' .. PM.utils.toVersionStr(tonumber(version)) .. ':|r ' .. count .. '|cffcccccc (' .. percentage .. '%)|r'
       if tonumber(version) > maxVersion then
         maxVersion = tonumber(version)
       end
