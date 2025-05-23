@@ -81,6 +81,14 @@ PizzaMonitor:RegisterModule('ps', function ()
     -- Throttle this function so it doesn't run on every frame render
     if (this.tick or 1) > GetTime() then return else this.tick = GetTime() + 1 end
 
+    -- Remove players not seen in 24 hours
+    local thresholdHours = 24
+    for player, details in pairs(data.ps.seen) do
+      if time() > details.lastSeen + (thresholdHours * 60 * 60) then
+        _G.PizzaMonitor_data.ps.seen[player] = nil
+      end
+    end
+
     for v in pairs(versionCounts) do
       versionCounts[v] = nil
     end
@@ -89,7 +97,7 @@ PizzaMonitor:RegisterModule('ps', function ()
       zoneTentCounts[v] = nil
     end
 
-    PM.ps.content = '|cffa050ffPizza|rMonitor |cff777777PizzaSlices|r'
+    PM.ps.content = '|cffa050ffPizza|rMonitor |cff777777PizzaSlices|r\n\n(Last ' .. thresholdHours .. ' hours)'
 
     local playerCount = 0
     local playerList = ''
